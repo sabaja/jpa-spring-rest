@@ -1,4 +1,4 @@
-package com.note.controller;
+package com.notes.controller;
 
 import java.util.List;
 
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.note.entity.Notes;
-import com.note.exception.ResourceNotFoundException;
-import com.note.repository.NotesRepository;
+import com.notes.entity.Notes;
+import com.notes.exception.ResourceNotFoundException;
+import com.notes.repository.NotesRepository;
 
 /**
  * https://www.callicoder.com/spring-boot-rest-api-tutorial-with-mysql-jpa-hibernate/

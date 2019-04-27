@@ -1,10 +1,10 @@
-package com.note.repository;
+package com.notes.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.note.entity.Notes;
+import com.notes.entity.Notes;
 
 /**
  * https://www.callicoder.com/spring-boot-rest-api-tutorial-with-mysql-jpa-hibernate/

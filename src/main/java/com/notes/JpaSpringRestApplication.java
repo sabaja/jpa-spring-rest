@@ -1,4 +1,4 @@
-package com.note.main;
+package com.notes;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;

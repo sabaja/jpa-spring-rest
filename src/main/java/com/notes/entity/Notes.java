@@ -1,4 +1,4 @@
-package com.note.entity;
+package com.notes.entity;
 
 import java.io.Serializable;
 import java.time.Instant;
