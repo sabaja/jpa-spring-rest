@@ -1,4 +1,4 @@
-package com.notes.entity;
+package com.notes.a.entity;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -49,12 +49,12 @@ public class Notes implements Serializable {
 	private String content;
 
 	// Automatic conversion type
-	@Column(name = "CREATEDAT", nullable = false)
+	@Column(name = "CREATE_DATE", nullable = false)
 	@CreatedDate
 	private Instant createdAt;
 
 	// Automatic conversion type
-	@Column(name = "UPDATEDAT", nullable = false)
+	@Column(name = "UPDATE_DATE", nullable = false)
 	@LastModifiedDate
 	private Instant updatedAt;
 
