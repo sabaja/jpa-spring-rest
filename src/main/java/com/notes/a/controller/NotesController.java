@@ -36,7 +36,7 @@ import com.notes.a.repository.NotesRepository;
  */
 
 @RestController
-@RequestMapping("/jpa-spring-rest")
+@RequestMapping("/api")
 public class NotesController {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
