@@ -1,9 +1,12 @@
 package com.notes.controller;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,6 +39,8 @@ import com.notes.repository.NotesRepository;
 @RequestMapping("/jpa-spring-rest")
 public class NotesController {
 
+	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	
 	@Autowired
 	private NotesRepository notesRepository;
 

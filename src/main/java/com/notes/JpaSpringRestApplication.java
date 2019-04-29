@@ -25,7 +25,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("com")
 @EnableJpaRepositories("com")
 public class JpaSpringRestApplication {
-	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	
 
 	public static void main(String[] args) throws IOException {
 		// From down to top
