@@ -2,13 +2,19 @@ package com.notes.a.entity;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -17,13 +23,17 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * https://www.callicoder.com/spring-boot-rest-api-tutorial-with-mysql-jpa-hibernate/
+ * 
  * @author SabatiniJa
  *
  */
@@ -31,8 +41,10 @@ import lombok.ToString;
 @Table(name = "NOTES")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
+@NoArgsConstructor
+@Getter
+@Setter
 @EqualsAndHashCode
-@ToString
 public class Notes implements Serializable {
 
 	/**
@@ -63,45 +75,24 @@ public class Notes implements Serializable {
 	@LastModifiedDate
 	private Instant updatedAt;
 
-	public Long getId() {
-		return id;
-	}
+	// Bidirectional relationships for performance
+	// https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
+	@OneToMany(mappedBy = "notes", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Votes> votes;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "USER_ID")
+	private User user;
 
-	public void setId(Long id) {
-		this.id = id;
+	@Override
+	public String toString() {
+		try {
+			return new ObjectMapper().writerWithDefaultPrettyPrinter()
+					.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public Instant getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Instant createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Instant getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Instant updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
 
 }

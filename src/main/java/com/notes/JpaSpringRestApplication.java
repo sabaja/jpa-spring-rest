@@ -1,10 +1,7 @@
 package com.notes;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -25,7 +22,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("com")
 @EnableJpaRepositories("com")
 public class JpaSpringRestApplication {
-	
 
 	public static void main(String[] args) throws IOException {
 		// From down to top

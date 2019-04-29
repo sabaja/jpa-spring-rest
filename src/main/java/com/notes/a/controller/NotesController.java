@@ -1,12 +1,9 @@
 package com.notes.a.controller;
 
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.notes.a.entity.Notes;
 import com.notes.a.exception.ResourceNotFoundException;
 import com.notes.a.repository.NotesRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * https://www.callicoder.com/spring-boot-rest-api-tutorial-with-mysql-jpa-hibernate/
@@ -37,9 +36,9 @@ import com.notes.a.repository.NotesRepository;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class NotesController {
 
-	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	
 	@Autowired
 	private NotesRepository notesRepository;
@@ -53,6 +52,7 @@ public class NotesController {
 	// parameter.
 	@PostMapping(value = "/notes")
 	public Notes createNotes(@Valid @RequestBody Notes notes) {
+		log.info("saving.. {}", notes);
 		return this.notesRepository.save(notes);
 	}
 

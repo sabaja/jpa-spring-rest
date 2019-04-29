@@ -1,22 +1,20 @@
 package com.notes.a.entity;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,44 +27,36 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "VOTES")
+@Table(name = "USER")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = "createdAt", allowGetters = true)
+@JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
 @NoArgsConstructor
+@EqualsAndHashCode
 @Getter
 @Setter
-@EqualsAndHashCode
-public class Votes implements Serializable {
-
+public class User implements Serializable {
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -642008647842664506L;
+	* 
+	*/
+	private static final long serialVersionUID = 8593336999639803120L;
 
 	@Id
 	@Column(name = "ID", nullable = false, unique = true)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "VOTE", nullable = false)
-	@Min(0)
-	@Max(10)
-	private Integer vote;
+	@NotNull
+	@Size(min = 1, max = 16)
+	@Column(name = "USER_NAME", nullable = false, unique = true)
+	private String userName;
 
-	// Automatic conversion type
-	@Column(name = "CREATE_DATE", nullable = false)
-	@CreatedDate
-	private Instant createdAt;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "NOTES_ID")
-	private Notes notes;
-
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Notes> notes;
+	
 	@Override
 	public String toString() {
 		try {
-			return new ObjectMapper().writerWithDefaultPrettyPrinter()
-					.writeValueAsString(this);
+			return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
