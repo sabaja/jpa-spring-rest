@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.notes.a.annotations.TrackTime;
 import com.notes.a.entity.Votes;
 import com.notes.a.exception.ResourceNotFoundException;
 import com.notes.a.repository.VotesRepository;
@@ -30,6 +31,7 @@ public class VotesController {
 	private VotesRepository votesRepository;
 
 	@GetMapping(value = "/votes")
+	@TrackTime
 	public List<Votes> getAllVotes() {
 		return this.votesRepository.findAll();
 	}

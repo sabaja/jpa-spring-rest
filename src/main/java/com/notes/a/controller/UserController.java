@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.notes.a.annotations.TrackTime;
 import com.notes.a.entity.User;
 import com.notes.a.exception.ResourceNotFoundException;
 import com.notes.a.repository.UserRepository;
@@ -30,6 +31,7 @@ public class UserController {
 	private UserRepository userRepository;
 
 	@GetMapping(value = "/user")
+	@TrackTime
 	public List<User> getAllUsers() {
 		return this.userRepository.findAll();
 	}

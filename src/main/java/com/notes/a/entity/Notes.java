@@ -22,6 +22,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,11 +43,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "NOTES")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
+@JsonIgnoreProperties(value = { "createdAt", "updatedAt"}, allowGetters = true)
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Notes implements Serializable {
 
 	/**
@@ -76,19 +80,34 @@ public class Notes implements Serializable {
 	private Instant updatedAt;
 
 	// Bidirectional relationships for performance
-	// https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
-	@OneToMany(mappedBy = "notes", cascade = CascadeType.ALL, orphanRemoval = true)
+	// https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+	@OneToMany(mappedBy = "notes", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Votes> votes;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
+
+	//https://stackoverflow.com/questions/20813496/tomcat-exception-cannot-call-senderror-after-the-response-has-been-committed
+	//senza JsonIgnore hibernate infinite loop for loading parent in child
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "USER_ID")
 	private User user;
+
+	public Notes(@NotBlank String title, @NotBlank String content, User user) {
+		super();
+		this.title = title;
+		this.content = content;
+		this.user = user;
+		this.votes = null;
+	}
+
+	public Notes(@NotBlank String title, @NotBlank String content, User user, List<Votes> votes) {
+		this(title, content, user);
+		this.setVotes(votes);
+	}
 
 	@Override
 	public String toString() {
 		try {
-			return new ObjectMapper().writerWithDefaultPrettyPrinter()
-					.writeValueAsString(this);
+			return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

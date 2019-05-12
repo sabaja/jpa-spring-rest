@@ -3,7 +3,6 @@ package com.notes.a.entity;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -29,7 +28,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "USER")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
+@JsonIgnoreProperties(value = { "createdAt", "updatedAt", "notes" }, allowGetters = true)
 @NoArgsConstructor
 @EqualsAndHashCode
 @Getter
@@ -46,13 +45,25 @@ public class User implements Serializable {
 	private Long id;
 
 	@NotNull
-	@Size(min = 1, max = 16)
+	@Size(min = 1, max = 256)
 	@Column(name = "USER_NAME", nullable = false, unique = true)
 	private String userName;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user")
 	private List<Notes> notes;
-	
+
+	public User(@NotNull @Size(min = 1, max = 16) String userName) {
+		super();
+		this.userName = userName;
+		this.notes = null;
+	}
+
+	public User(@NotNull @Size(min = 1, max = 16) String userName, List<Notes> notes) {
+		super();
+		this.userName = userName;
+		this.notes = notes;
+	}
+
 	@Override
 	public String toString() {
 		try {
