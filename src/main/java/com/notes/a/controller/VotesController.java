@@ -35,6 +35,11 @@ public class VotesController {
 	public List<Votes> getAllVotes() {
 		return this.votesRepository.findAll();
 	}
+	
+	@GetMapping(value = "/votes/avg/{notes_id}")
+	public int getAvgVotesByNotesId(@PathVariable(value = "notes_id") Long notes_id) {
+		return votesRepository.getAverageOfVotesByNotesId(notes_id);
+	}
 
 	@GetMapping(value = "/votes/{id}")
 	public Votes getVotesById(@PathVariable(value = "id") Long id) {
