@@ -41,6 +41,12 @@ public class VotesController {
 		return votesRepository.getAverageOfVotesByNotesId(notes_id);
 	}
 
+	@GetMapping(value = "/votes/count")
+	public int getCountVotes() {
+		return votesRepository.countVotesRecord();
+	}
+
+	
 	@GetMapping(value = "/votes/{id}")
 	public Votes getVotesById(@PathVariable(value = "id") Long id) {
 		return votesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Vote", "id", id));
