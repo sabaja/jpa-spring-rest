@@ -58,6 +58,7 @@ public class NoteServiceImpl implements NoteService {
 
 	@Override
 	//https://www.baeldung.com/spring-data-jpa-pagination-sorting
+	@Transactional(readOnly = true)
 	public Page<Notes> findNotesByPageableOrderById(int numNotes) {
 		Pageable pageable = PageRequest.of(0, numNotes, Sort.by("id"));
 		Page<Notes>  pageOfNotes = this.notesRepository.findAll(pageable);
