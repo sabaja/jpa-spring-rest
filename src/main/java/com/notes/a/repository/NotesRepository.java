@@ -17,4 +17,7 @@ import com.notes.a.entity.Notes;
  */
 @Repository
 public interface NotesRepository extends JpaRepository<Notes, Long> {
+	
+//	@Query("select n.id from com.notes.a.entity.Notes n where n.notesStatus is null" )
+//	public List<Long> findNullNotesStatus();
 }

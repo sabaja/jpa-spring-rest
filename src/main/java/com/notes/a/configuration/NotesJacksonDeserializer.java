@@ -1,4 +1,4 @@
-package com.notes.a.jackson.configuration;
+package com.notes.a.configuration;
 
 import java.io.IOException;
 

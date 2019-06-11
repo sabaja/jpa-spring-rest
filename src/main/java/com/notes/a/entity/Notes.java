@@ -8,10 +8,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -28,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.notes.a.domain.NotesStatus;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -41,13 +44,13 @@ import lombok.Setter;
  *
  */
 @Entity
-@Table(name = "NOTES")
+@Table(name = "NOTES", indexes = @Index(columnList = "id", name = "notes_id_hidx"))
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
-@JsonIgnoreProperties(value = { "createdAt", "updatedAt"}, allowGetters = true)
+@JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Notes implements Serializable {
 
@@ -84,12 +87,17 @@ public class Notes implements Serializable {
 	@OneToMany(mappedBy = "notes", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Votes> votes;
 
-	//https://stackoverflow.com/questions/20813496/tomcat-exception-cannot-call-senderror-after-the-response-has-been-committed
-	//senza JsonIgnore hibernate infinite loop for loading parent in child
+	// https://stackoverflow.com/questions/20813496/tomcat-exception-cannot-call-senderror-after-the-response-has-been-committed
+	// senza JsonIgnore hibernate infinite loop for loading parent in child
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "USER_ID")
 	private User user;
+
+	// https://vladmihalcea.com/the-best-way-to-map-an-enum-type-with-jpa-and-hibernate/
+	@Enumerated
+	@Column(name = "NOTES_STATUS", columnDefinition = "smallint", nullable = true)
+	private NotesStatus notesStatus;
 
 	public Notes(@NotBlank String title, @NotBlank String content, User user) {
 		super();
@@ -99,9 +107,10 @@ public class Notes implements Serializable {
 		this.votes = null;
 	}
 
-	public Notes(@NotBlank String title, @NotBlank String content, User user, List<Votes> votes) {
+	public Notes(@NotBlank String title, @NotBlank String content, User user, List<Votes> votes, NotesStatus notesStatus) {
 		this(title, content, user);
 		this.setVotes(votes);
+		this.setNotesStatus(notesStatus);
 	}
 
 	@Override
