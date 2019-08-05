@@ -2,7 +2,9 @@ package com.notes.a.service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 
@@ -86,21 +88,33 @@ public class NoteServiceImpl implements NoteService {
 	public void processingNullNotesStatus() {
 		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
 
-        // create update
-        CriteriaUpdate<Notes> update = cb.
-        createCriteriaUpdate(Notes.class);
+		// create update
+		CriteriaUpdate<Notes> update = cb.createCriteriaUpdate(Notes.class);
 
-        // set the root class
-        Root<Notes> e = update.from(Notes.class);
+		// set the root class
+		Root<Notes> root = update.from(Notes.class);
 
-        // set update and where clause
-        update.set("notesStatus", NotesStatus.APPROVED);
-        update.where(cb.isNull(e.get("notesStatus")));
+		// set update and where clause
+		update.set("notesStatus", NotesStatus.APPROVED);
+		update.where(cb.isNull(root.get("notesStatus")));
 
-        // perform update
-        
-        log.info("Update n°:{} of Notes", this.entityManager.createQuery(update).executeUpdate());
+		// perform update
+
+		log.info("Update n°:{} of Notes", this.entityManager.createQuery(update).executeUpdate());
 		return;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Boolean findNullNotesStatus() {
+//		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+//		CriteriaQuery<Notes> cr = cb.createQuery(Notes.class);
+//		Root<Notes> root = cr.from(Notes.class);
+//		cr.select(root).where(cb.isNull(root.get("notesStatus")));
+		final String criteriaQuery = "SELECT CASE WHEN EXISTS (SELECT n FROM com.notes.a.entity.Notes n WHERE n.notesStatus is null) THEN TRUE ELSE FALSE END";
+
+		return (Boolean) entityManager.createQuery(criteriaQuery).setMaxResults(1).getSingleResult();
+
 	}
 
 	public static void main(String[] args) {

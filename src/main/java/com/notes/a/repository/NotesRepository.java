@@ -1,6 +1,7 @@
 package com.notes.a.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.notes.a.entity.Notes;
@@ -18,6 +19,6 @@ import com.notes.a.entity.Notes;
 @Repository
 public interface NotesRepository extends JpaRepository<Notes, Long> {
 	
-//	@Query("select n.id from com.notes.a.entity.Notes n where n.notesStatus is null" )
-//	public List<Long> findNullNotesStatus();
+//	@Query("SELECT CASE WHEN EXISTS (SELECT n FROM com.notes.a.entity.Notes n WHERE n.notesStatus is null) THEN TRUE ELSE FALSE END" )
+//	public Boolean findNullNotesStatus();
 }
