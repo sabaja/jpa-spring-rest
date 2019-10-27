@@ -1,13 +1,14 @@
-package com.notes.a.service;
+package com.notes.app.service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
-import javax.persistence.criteria.Root;
-
+import com.notes.app.annotations.TrackTime;
+import com.notes.app.domain.NotesStatus;
+import com.notes.app.entity.Notes;
+import com.notes.app.entity.User;
+import com.notes.app.entity.Votes;
+import com.notes.app.repository.NotesRepository;
+import com.notes.app.repository.VotesRepository;
+import com.notes.app.utils.RandomUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,16 +18,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.notes.a.annotations.TrackTime;
-import com.notes.a.domain.NotesStatus;
-import com.notes.a.entity.Notes;
-import com.notes.a.entity.User;
-import com.notes.a.entity.Votes;
-import com.notes.a.repository.NotesRepository;
-import com.notes.a.repository.VotesRepository;
-import com.notes.a.utils.RandomUtils;
-
-import lombok.extern.slf4j.Slf4j;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
 
 @Service
 @Slf4j
@@ -34,7 +30,7 @@ public class NoteServiceImpl implements NoteService {
 
 	@Autowired
 	private NotesRepository notesRepository;
-//	@Autowired
+	//	@Autowired
 //	private UserRepository userRepository;
 	@Autowired
 	private VotesRepository votesRepository;
@@ -79,7 +75,7 @@ public class NoteServiceImpl implements NoteService {
 	 * this.entityManager.unwrap(Session.class).getCriteriaBuilder();
 	 * CriteriaQuery<Notes> query = cri.createQuery(Notes.class); //
 	 * cri.add(Restrictions.like(propertyName, value, matchMode))
-	 * 
+	 *
 	 * @param args
 	 */
 
@@ -111,12 +107,12 @@ public class NoteServiceImpl implements NoteService {
 //		CriteriaQuery<Notes> cr = cb.createQuery(Notes.class);
 //		Root<Notes> root = cr.from(Notes.class);
 //		cr.select(root).where(cb.isNull(root.get("notesStatus")));
-		final String criteriaQuery = "SELECT CASE WHEN EXISTS (SELECT n FROM com.notes.a.entity.Notes n WHERE n.notesStatus is null) THEN TRUE ELSE FALSE END";
+		//	final String criteriaQuery = "SELECT CASE WHEN EXISTS (SELECT n FROM com.notes.a.entity.Notes n WHERE n.notesStatus is null) THEN TRUE ELSE FALSE END";
 
-		return (Boolean) entityManager.createQuery(criteriaQuery).setMaxResults(1).getSingleResult();
-
+		//	return (Boolean) entityManager.createQuery(criteriaQuery).setMaxResults(1).getSingleResult();
+		return null;
 	}
-
+/*
 	public static void main(String[] args) {
 		String note = RandomUtils.createRandomNote();
 		String user = RandomUtils.createRandomUser();
@@ -124,5 +120,5 @@ public class NoteServiceImpl implements NoteService {
 		String title = RandomUtils.createRandomTitle();
 		System.out.println("Title " + title + " note: [" + note + "] user: " + user + " vote: " + vote);
 	}
-
+*/
 }

@@ -1,4 +1,4 @@
-package com.notes.a.utils;
+package com.notes.app.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

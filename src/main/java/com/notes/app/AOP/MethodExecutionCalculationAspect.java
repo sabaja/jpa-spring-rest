@@ -1,10 +1,9 @@
-package com.notes.a.AOP;
+package com.notes.app.AOP;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Aspect
 @Slf4j

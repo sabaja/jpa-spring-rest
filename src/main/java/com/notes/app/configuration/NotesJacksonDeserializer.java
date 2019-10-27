@@ -1,14 +1,4 @@
-package com.notes.a.configuration;
-
-import java.io.IOException;
-
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.notes.a.entity.Notes;
+package com.notes.app.configuration;
 
 /**
  * https://www.baeldung.com/jackson-deserialization

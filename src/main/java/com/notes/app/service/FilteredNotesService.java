@@ -1,4 +1,4 @@
-package com.notes.lambda.service;
+package com.notes.app.service;
 
 import org.springframework.stereotype.Service;
 

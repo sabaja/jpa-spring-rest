@@ -1,7 +1,7 @@
 package com.notes;
 
-import java.io.IOException;
-
+import com.notes.app.service.NoteService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,15 +13,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-import com.notes.a.service.NoteService;
-
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
 
 /**
  * https://www.callicoder.com/spring-boot-rest-api-tutorial-with-mysql-jpa-hibernate/
- * 
- * @author SabatiniJa
  *
+ * @author SabatiniJa
  */
 @SpringBootApplication
 @EnableJpaAuditing
@@ -31,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 //https://www.baeldung.com/spring-async
 @EnableAsync
 @Slf4j
-public class JpaSpringRestApplication implements CommandLineRunner{
+public class JpaSpringRestApplication implements CommandLineRunner {
 
 	@SuppressWarnings("unused")
 	@Autowired
@@ -39,12 +36,12 @@ public class JpaSpringRestApplication implements CommandLineRunner{
 
 	public static void main(String[] args) throws IOException {
 		ConfigurableApplicationContext context = SpringApplication.run(JpaSpringRestApplication.class, args);
-		
+
 		System.out.println("Hit enter to terminate");
 		System.in.read();
 		context.close();
 	}
-	
+
 	@Override
 	public void run(String... arg0) throws Exception {
 		// From down to top
@@ -53,5 +50,4 @@ public class JpaSpringRestApplication implements CommandLineRunner{
 //		log.info("Feedding DB... done");
 		log.info("NO populating db");
 	}
-	
 }

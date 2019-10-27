@@ -1,8 +1,7 @@
-package com.notes.a.repository;
+package com.notes.app.repository;
 
+import com.notes.app.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.notes.a.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 

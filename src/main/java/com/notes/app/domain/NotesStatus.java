@@ -1,4 +1,4 @@
-package com.notes.a.domain;
+package com.notes.app.domain;
 
 /**
  * 
