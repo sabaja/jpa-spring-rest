@@ -28,14 +28,14 @@ import java.io.IOException;
 //https://www.baeldung.com/spring-async
 @EnableAsync
 @Slf4j
-public class JpaSpringRestApplication implements CommandLineRunner {
+public class Application implements CommandLineRunner {
 
 	@SuppressWarnings("unused")
 	@Autowired
 	private NoteService noteService;
 
 	public static void main(String[] args) throws IOException {
-		ConfigurableApplicationContext context = SpringApplication.run(JpaSpringRestApplication.class, args);
+		ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
 
 		System.out.println("Hit enter to terminate");
 		System.in.read();
