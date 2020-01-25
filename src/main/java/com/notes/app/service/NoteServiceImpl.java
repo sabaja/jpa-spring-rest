@@ -30,8 +30,6 @@ public class NoteServiceImpl implements NoteService {
 
 	@Autowired
 	private NotesRepository notesRepository;
-	//	@Autowired
-//	private UserRepository userRepository;
 	@Autowired
 	private VotesRepository votesRepository;
 
@@ -49,7 +47,6 @@ public class NoteServiceImpl implements NoteService {
 		User user1 = new User(RandomUtils.createRandomUser());
 		Notes note1 = new Notes(RandomUtils.createRandomTitle(), RandomUtils.createRandomNote(), user1);
 		Votes vote1 = new Votes(RandomUtils.createRandomVote(), note1);
-
 		votesRepository.save(vote1);
 	}
 
@@ -62,22 +59,14 @@ public class NoteServiceImpl implements NoteService {
 		}
 	}
 
-	@Override
+
 	// https://www.baeldung.com/spring-data-jpa-pagination-sorting
+	@Override
 	@Transactional(readOnly = true)
 	public Page<Notes> findNotesByPageableOrderById(int numNotes) {
 		Pageable pageable = PageRequest.of(0, numNotes, Sort.by("id"));
-		Page<Notes> pageOfNotes = this.notesRepository.findAll(pageable);
-		return pageOfNotes;
+		return this.notesRepository.findAll(pageable);
 	}
-	/*
-	 * CriteriaBuilder cri =
-	 * this.entityManager.unwrap(Session.class).getCriteriaBuilder();
-	 * CriteriaQuery<Notes> query = cri.createQuery(Notes.class); //
-	 * cri.add(Restrictions.like(propertyName, value, matchMode))
-	 *
-	 * @param args
-	 */
 
 	@Override
 	@Transactional
@@ -97,7 +86,6 @@ public class NoteServiceImpl implements NoteService {
 		// perform update
 
 		log.info("Update n°:{} of Notes", this.entityManager.createQuery(update).executeUpdate());
-		return;
 	}
 
 	@Override
@@ -110,7 +98,7 @@ public class NoteServiceImpl implements NoteService {
 		//	final String criteriaQuery = "SELECT CASE WHEN EXISTS (SELECT n FROM com.notes.a.entity.Notes n WHERE n.notesStatus is null) THEN TRUE ELSE FALSE END";
 
 		//	return (Boolean) entityManager.createQuery(criteriaQuery).setMaxResults(1).getSingleResult();
-		return null;
+		return Boolean.FALSE;
 	}
 /*
 	public static void main(String[] args) {

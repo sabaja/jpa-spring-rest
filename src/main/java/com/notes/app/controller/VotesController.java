@@ -2,9 +2,7 @@ package com.notes.app.controller;
 
 import com.notes.app.annotations.TrackTime;
 import com.notes.app.entity.Votes;
-import com.notes.app.exception.ResourceNotFoundException;
-import com.notes.app.repository.VotesRepository;
-import lombok.extern.slf4j.Slf4j;
+import com.notes.app.service.VotesSerice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,54 +10,52 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Slf4j
+import static org.springframework.http.ResponseEntity.ok;
+
+
 @RestController
 @RequestMapping("/api")
 public class VotesController {
 
 	@Autowired
-	private VotesRepository votesRepository;
+	private VotesSerice votesService;
 
 	@GetMapping(value = "/votes")
 	@TrackTime
 	public List<Votes> getAllVotes() {
-		return this.votesRepository.findAll();
+		return this.votesService.findAll();
 	}
-	
+
 	@GetMapping(value = "/votes/avg/{notes_id}")
-	public int getAvgVotesByNotesId(@PathVariable(value = "notes_id") Long notes_id) {
-		return votesRepository.getAverageOfVotesByNotesId(notes_id);
+	public int getAvgVotesByNotesId(@PathVariable(value = "notesId") Long notesId) {
+		return votesService.getAverageOfVotesByNotesId(notesId);
 	}
 
 	@GetMapping(value = "/votes/count")
 	public int getCountVotes() {
-		return votesRepository.countVotesRecord();
+		return votesService.countVotesRecord();
 	}
 
-	
+
 	@GetMapping(value = "/votes/{id}")
 	public Votes getVotesById(@PathVariable(value = "id") Long id) {
-		return votesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Vote", "id", id));
+		return votesService.findById(id);
 	}
-	
+
 	@PostMapping(value = "/votes")
 	public Votes createVote(@Valid @RequestBody Votes votes) {
-		log.info("saving.. {}", votes);
-		return votesRepository.save(votes);
+		return votesService.save(votes);
 	}
+
 	@PutMapping(value = "/votes/{id}")
 	public Votes updateVoteById(@PathVariable(value = "id") Long id, @Valid @RequestBody Votes votes) {
-		Votes vote = votesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Vote", "id", id));
-		vote.setVote(votes.getVote());
-		vote.setNotes(votes.getNotes());
-		return votesRepository.save(vote);
+		return votesService.updateVoteById(id, votes);
 	}
-	
+
 	@DeleteMapping(value = "/votes/{id}")
-	public ResponseEntity<?> deleteVoteById(@PathVariable(value = "id") Long id) {
-		Votes vote = votesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Vote", "id", id));
-		votesRepository.delete(vote);
-		return ResponseEntity.ok().build();
+	public ResponseEntity deleteVoteById(@PathVariable(value = "id") Long id) {
+		votesService.deleteVoteById(id);
+		return ok().build();
 	}
 
 }
